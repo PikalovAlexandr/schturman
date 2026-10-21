@@ -8,6 +8,7 @@ members = [
     "services/ai-orchestrator",
     "ai-agents/semantic-search",
     "ai-agents/cad-parser",
+    "ai-agents/bom-validator",
     "ai-agents/llm-tasks",
     "shared/models",
     "shared/auth",
