@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS part_embeddings (
     id UUID PRIMARY KEY,
     part_id UUID NOT NULL REFERENCES parts(id) ON DELETE CASCADE,
     embedding_type VARCHAR(50) NOT NULL,
-    embedding vector(384),
+    embedding float[],
     metadata JSONB,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
