@@ -13,6 +13,7 @@ members = [
     "shared/models",
     "shared/auth",
     "shared/clients",
+    "ai-agents/change-impact",
 ]
 resolver = "2"
 
