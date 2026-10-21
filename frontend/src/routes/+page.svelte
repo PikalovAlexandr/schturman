@@ -116,9 +116,9 @@
                 <div class="item-main">
                   <a href="/parts/{part.id}" class="item-title">{part.name}</a>
                   <div class="item-meta">
-                    <span class="part-number">{part.part_number}</span>
+                    <span class="part-number">{part.number}</span>
                     <span class="separator">•</span>
-                    <span class="part-type">{part.type}</span>
+                    <span class="part-type">{part.part_type}</span>
                   </div>
                 </div>
                 <span class="badge {getStatusBadge(part.status)}">{part.status}</span>

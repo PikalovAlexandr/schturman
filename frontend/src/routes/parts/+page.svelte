@@ -111,7 +111,7 @@
           <div class="part-header">
             <div>
               <h3 class="part-name">{part.name}</h3>
-              <div class="part-number">{part.part_number}</div>
+              <div class="part-number">{part.number}</div>
             </div>
             <span class="badge {getStatusBadge(part.status)}">{part.status}</span>
           </div>
@@ -123,7 +123,7 @@
           <div class="part-meta">
             <div class="meta-item">
               <span class="meta-label">Тип:</span>
-              <span class="meta-value">{part.type}</span>
+              <span class="meta-value">{part.part_type}</span>
             </div>
             <div class="meta-item">
               <span class="meta-label">Создано:</span>

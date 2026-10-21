@@ -63,19 +63,31 @@ export const auth = {
 // Parts API
 export interface Part {
   id: string;
-  part_number: string;
+  number: string;
   name: string;
   description: string | null;
-  type: string;
+  part_type: string;
   status: string;
-  created_by: string;
+  version: string;
+  revision: number;
+  owner_id: string;
+  updated_by: string;
+  attributes: Record<string, any>;
   created_at: string;
   updated_at: string;
 }
 
+export interface PartsResponse {
+  parts: Part[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
 export const parts = {
   async list(): Promise<Part[]> {
-    return apiFetch('parts', '/api/parts');
+    const response: PartsResponse = await apiFetch('parts', '/api/parts');
+    return response.parts;
   },
 
   async get(id: string): Promise<Part> {
@@ -83,11 +95,12 @@ export const parts = {
   },
 
   async create(data: {
-    part_number: string;
+    number: string;
     name: string;
     description?: string;
-    type: string;
+    part_type: string;
     status?: string;
+    version?: string;
   }): Promise<Part> {
     return apiFetch('parts', '/api/parts', {
       method: 'POST',

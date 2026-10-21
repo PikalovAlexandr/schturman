@@ -14,9 +14,9 @@ export default defineConfig(() => ({
   clearScreen: false,
   // 2. tauri expects a fixed port, fail if that port is not available
   server: {
-    port: 1420,
-    strictPort: true,
-    host: host || "127.0.0.1",
+    port: process.env.TAURI_DEV_HOST ? 1420 : 5173,
+    strictPort: process.env.TAURI_DEV_HOST ? true : false,
+    host: host || "0.0.0.0",
     hmr: host
       ? {
           protocol: "ws",

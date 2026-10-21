@@ -83,7 +83,7 @@
           <label>Входные данные (JSON)</label>
           <textarea
             bind:value={inputText}
-            placeholder='{"query": "болт M6 нержавеющая сталь"}'
+            placeholder='&#123;"query": "болт M6 нержавеющая сталь"&#125;'
             rows="4"
           ></textarea>
         </div>
