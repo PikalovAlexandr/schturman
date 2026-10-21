@@ -53,7 +53,7 @@ pub async fn create_task(
     let task = sqlx::query_as::<_, AiTask>(
         r#"
         INSERT INTO ai_tasks (task_type, status, input_data, priority, user_id)
-        VALUES ($1, 'pending', $2, $3, $4)
+        VALUES ($1, 'queued', $2, $3, $4)
         RETURNING id, task_type, status, input_data, result_data, error_message, 
                   priority, user_id, created_at, started_at, completed_at, updated_at
         "#,
