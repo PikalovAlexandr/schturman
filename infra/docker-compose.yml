@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # PostgreSQL - основная база данных
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: schturman-postgres
+    environment:
+      POSTGRES_DB: schturman
+      POSTGRES_USER: schturman
+      POSTGRES_PASSWORD: schturman_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schturman"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SurrealDB - графовая база данных для BOM
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: schturman-surrealdb
+    command: start --log trace --user root --pass root memory
+    ports:
+      - "8000:8000"
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Qdrant - векторная база данных для семантического поиска
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: schturman-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO - S3-совместимое хранилище файлов
+  minio:
+    image: minio/minio:latest
+    container_name: schturman-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # NATS - очередь сообщений
+  nats:
+    image: nats:latest
+    container_name: schturman-nats
+    command: "-js -m 8222"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8222/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Meilisearch - поисковый движок
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: schturman-meilisearch
+    environment:
+      MEILI_MASTER_KEY: masterKey
+      MEILI_ENV: development
+    ports:
+      - "7700:7700"
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis - кеширование
+  redis:
+    image: redis:alpine
+    container_name: schturman-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - schturman-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  schturman-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  minio_data:
+  meilisearch_data:
