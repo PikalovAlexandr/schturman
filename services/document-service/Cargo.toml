@@ -28,3 +28,5 @@ thiserror = { workspace = true }
 config = { workspace = true }
 dotenvy = { workspace = true }
 opendal = { workspace = true }
+jsonwebtoken = "9"
+sha2 = "0.10"
