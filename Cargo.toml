@@ -16,6 +16,7 @@ members = [
     "shared/models",
     "shared/auth",
     "shared/clients",
+    "frontend/src-tauri",
 ]
 resolver = "2"
 
