@@ -28,3 +28,4 @@ anyhow = { workspace = true }
 thiserror = { workspace = true }
 config = { workspace = true }
 dotenvy = { workspace = true }
+jsonwebtoken = "9"
