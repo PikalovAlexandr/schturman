@@ -9,11 +9,13 @@ members = [
     "ai-agents/semantic-search",
     "ai-agents/cad-parser",
     "ai-agents/bom-validator",
+    "ai-agents/change-impact",
+    "ai-agents/document-extractor",
+    "ai-agents/llm-summary",
     "ai-agents/llm-tasks",
     "shared/models",
     "shared/auth",
     "shared/clients",
-    "ai-agents/change-impact",
 ]
 resolver = "2"
 
