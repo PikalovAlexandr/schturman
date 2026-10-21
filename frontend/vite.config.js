@@ -17,6 +17,18 @@ export default defineConfig(() => ({
     port: process.env.TAURI_DEV_HOST ? 1420 : 5173,
     strictPort: process.env.TAURI_DEV_HOST ? true : false,
     host: host || "0.0.0.0",
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3002',
+        changeOrigin: true,
+        configure: (proxy, _options) => {
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            // Add x-user-id header for dev testing
+            proxyReq.setHeader('x-user-id', 'eb649f37-843d-4a53-9854-fb1aac65cd4d');
+          });
+        },
+      },
+    },
     hmr: host
       ? {
           protocol: "ws",
